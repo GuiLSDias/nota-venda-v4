@@ -1,15 +1,15 @@
 package model;
 
 public class StockItem {
-    private ProductSpecification product;
+    private Product product;
     private int quantity;
 
-    public StockItem(ProductSpecification product, int quantity) {
+    public StockItem(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;
     }
 
-    public ProductSpecification getProduct() {
+    public Product getProduct() {
         return product;
     }
 
@@ -17,7 +17,11 @@ public class StockItem {
         return quantity;
     }
 
-    public void decreaseQuantity(int soldQuantity) {
-        this.quantity -= soldQuantity;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public boolean isAvailable(int requiredQuantity) {
+        return quantity >= requiredQuantity;
     }
 }

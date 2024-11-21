@@ -1,13 +1,8 @@
 package model;
 
-public class ProductSpecification {
+public class Product {
     private String description;
     private double price;
-
-    public ProductSpecification(String description, double price) {
-        this.description = description;
-        this.price = price;
-    }
 
     public String getDescription() {
         return description;
@@ -15,5 +10,13 @@ public class ProductSpecification {
 
     public double getPrice() {
         return price;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

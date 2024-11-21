@@ -1,36 +1,18 @@
 package model;
 
 public class SalesManager {
-    private Stock stock;
+    private Stock estoque;
 
-    public SalesManager(Stock stock) {
-        this.stock = stock;
+    public SalesManager(Stock estoque) {
+        this.estoque = estoque;
     }
 
-    public Sale processSale(String[][] products, String paymentMethod) {
-        Sale sale = new Sale();
-
-        for (String[] product : products) {
-            String description = product[0];
-            int quantity = Integer.parseInt(product[1]);
-
-            if (stock.hasProduct(description, quantity)) {
-                stock.removeProduct(description, quantity);
-                ProductSpecification productSpec = stock.getItems().stream()
-                        .filter(item -> item.getProduct().getDescription().equals(description))
-                        .findFirst()
-                        .get()
-                        .getProduct();
-
-                SaleItem saleItem = new SaleItem(productSpec, quantity);
-                sale.addItem(saleItem);
-            } else {
-                throw new RuntimeException("Insufficient stock for product: " + description);
-            }
+    public boolean processSale(Sale sale, String description, double price, int quantity) {
+        if (estoque.hasProduct(description, quantity)) {
+            sale.addProduct(description, price, quantity);
+            estoque.updateStock(description, quantity);
+            return true;
         }
-
-        sale.setPaymentMethod(paymentMethod);
-        sale.calculateTotal();
-        return sale;
+        return false;
     }
 }

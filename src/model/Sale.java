@@ -5,35 +5,28 @@ import java.util.List;
 
 public class Sale {
     private List<SaleItem> items = new ArrayList<>();
-    private String paymentMethod;
-    private double totalAmount;
 
-    public void addItem(SaleItem saleItem) {
-        items.add(saleItem);
+    public void addProduct(String description, double price, int quantity) {
+        Product product = new Product();
+        product.setDescription(description);
+        product.setPrice(price);
+
+        SaleItem item = new SaleItem();
+        item.setProduct(product);
+        item.setQuantity(quantity);
+
+        items.add(item);
+    }
+
+    public double getTotal() {
+        double total = 0;
+        for (SaleItem saleItem : items) {
+            total += saleItem.getSubtotal();
+        }
+        return total;
     }
 
     public List<SaleItem> getItems() {
-        return items;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public double getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void calculateTotal() {
-        totalAmount = items.stream().mapToDouble(SaleItem::getSubtotal).sum();
-        if ("credit card".equalsIgnoreCase(paymentMethod)) {
-            totalAmount *= 1.05;
-        } else if ("cash/pix".equalsIgnoreCase(paymentMethod)) {
-            totalAmount *= 0.95;
-        }
+        return new ArrayList<>(items);
     }
 }

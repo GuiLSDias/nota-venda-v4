@@ -6,20 +6,24 @@ import java.util.List;
 public class Stock {
     private List<StockItem> items = new ArrayList<>();
 
-    public void addItem(StockItem stockItem) {
-        items.add(stockItem);
+    public void addItem(Product product, int quantity) {
+        items.add(new StockItem(product, quantity));
     }
 
-    public boolean hasProduct(String description, int quantity) {
-        return items.stream()
-                .anyMatch(item -> item.getProduct().getDescription().equals(description) && item.getQuantity() >= quantity);
-    }
-
-    public void removeProduct(String description, int quantity) {
+    public boolean hasProduct(String description, int requiredQuantity) {
         for (StockItem item : items) {
-            if (item.getProduct().getDescription().equals(description)) {
-                item.decreaseQuantity(quantity);
-                break;
+            if (item.getProduct().getDescription().equalsIgnoreCase(description) &&
+                    item.isAvailable(requiredQuantity)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void updateStock(String description, int soldQuantity) {
+        for (StockItem item : items) {
+            if (item.getProduct().getDescription().equalsIgnoreCase(description)) {
+                item.setQuantity(item.getQuantity() - soldQuantity);
             }
         }
     }
